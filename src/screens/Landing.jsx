@@ -6,7 +6,7 @@ const CONTACT_EMAIL = 'jaorawalamufaddal7@gmail.com'
 const features = [
   {
     title: 'Live multiplayer, peer-to-peer',
-    text: 'The host’s screen is the game board. Everyone else answers from their own phone — synchronized directly over WebRTC, with no game server in between.',
+    text: 'The host’s device is the game board — phone, tablet, laptop or TV. Everyone else answers from their own phone — synchronized directly over WebRTC, with no game server in between.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <circle cx="9" cy="7" r="3.2" /><circle cx="17" cy="9" r="2.6" />
@@ -139,7 +139,7 @@ export default function Landing({ onGetStarted }) {
               Turn any room<br />into a <em>game&nbsp;show</em>.
             </h1>
             <p className="lede reveal reveal-3">
-              Build original quizzes, host them from the big screen, and let everyone answer
+              Build original quizzes, host them from any device — phone, tablet, laptop or TV — and let everyone answer
               from their own phone — no accounts, no installs, no cost.
             </p>
             <div className="landing-ctas reveal reveal-4">
@@ -188,8 +188,8 @@ export default function Landing({ onGetStarted }) {
             </div>
             <div className="step-card">
               <span className="step-num">02</span>
-              <h3>Host the big screen</h3>
-              <p>Launch the game on a projector, TV, shared screen or laptop. A 5-letter room code appears — that’s the whole ceremony.</p>
+              <h3>Host from any device</h3>
+              <p>Launch the game on a phone, tablet, laptop, projector or TV — if it has a browser, it can host. A 5-letter room code appears — that’s the whole ceremony.</p>
             </div>
             <div className="step-card">
               <span className="step-num">03</span>

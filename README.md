@@ -8,7 +8,7 @@ costs nothing to run.
 ## How it works
 
 - **Create** original quizzes in the browser (stored locally on your device).
-- **Host** a game: a big screen shows the questions and a 5-character room code.
+- **Host** a game from any device — phone, tablet, laptop or TV: the host screen shows the questions and a 5-character room code.
 - **Players join** from their phones/laptops by entering the code — no sign-up.
 - The **host's browser is authoritative**: it tracks the timer, scores answers
   (speed-based), and syncs everyone peer-to-peer via WebRTC (signaled through
@@ -37,6 +37,10 @@ npm run preview  # serve the production build
 - Multiplayer needs internet access (the free PeerJS signaling broker + STUN).
   Symmetric NAT/firewall setups may prevent a direct peer connection; there is
   no TURN relay because that would cost money — by design the app stays free.
+- Hosting works from any device with a browser, phones and tablets included:
+  the host layout is responsive, the screen stays awake during the game (Screen
+  Wake Lock API where supported), and the lobby offers a native Share button
+  (with clipboard fallback) to invite players.
 - Game content syncs peer-to-peer; quiz data never leaves devices except
   between the players in your game.
 - Icons are SVG; generating dedicated maskable PNG icons (192/512) is a good

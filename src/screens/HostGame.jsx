@@ -39,6 +39,30 @@ export default function HostGame({ quizId, onExit }) {
     qIndexRef.current = qIndex
   }, [qIndex])
 
+  // Keep the screen awake while hosting — essential on phones/tablets, where
+  // the display would otherwise lock mid-game and drop every player.
+  useEffect(() => {
+    let lock = null
+    const request = async () => {
+      try {
+        if ('wakeLock' in navigator && document.visibilityState === 'visible') {
+          lock = await navigator.wakeLock.request('screen')
+        }
+      } catch {
+        // wake lock unavailable or denied — hosting still works, screen may just sleep
+      }
+    }
+    request()
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible') request()
+    }
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility)
+      if (lock) lock.release().catch(() => {})
+    }
+  }, [])
+
   const broadcast = useCallback((msg) => {
     for (const conn of connsRef.current.values()) {
       try {
@@ -319,6 +343,24 @@ export default function HostGame({ quizId, onExit }) {
     }
   }
 
+  // Native share sheet on phones/tablets; clipboard fallback elsewhere.
+  const shareGame = async () => {
+    const shareData = {
+      title: 'Quiz Party',
+      text: `Join my quiz “${quiz?.title ?? 'Quiz Party'}” — room code ${code}`,
+      url: window.location.origin,
+    }
+    if (typeof navigator.share === 'function') {
+      try {
+        await navigator.share(shareData)
+        return
+      } catch {
+        return // user dismissed the share sheet — nothing to fall back to
+      }
+    }
+    copyCode()
+  }
+
   if (!quiz) {
     return (
       <div className="fullscreen-center">
@@ -351,7 +393,10 @@ export default function HostGame({ quizId, onExit }) {
           <h1 className="center" style={{ margin: '8px 0 0' }}>{quiz.title}</h1>
           <p className="muted center">Players open Quiz Party on their device → “Join a Game” and enter:</p>
           <div className="room-code" aria-label="Room code">{code}</div>
-          <button className="btn small" onClick={copyCode}>Copy code</button>
+          <div className="lobby-actions">
+            <button className="btn small" onClick={copyCode}>Copy code</button>
+            <button className="btn small" onClick={shareGame}>Share invite</button>
+          </div>
           <div className="player-chips">
             {players.filter((p) => p.connected).map((p) => (
               <span key={p.peerId} className="chip">
